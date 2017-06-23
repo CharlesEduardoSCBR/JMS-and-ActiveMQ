@@ -21,7 +21,7 @@ public class TesteConsumidorTopicoEstoque {
 		InitialContext context = new InitialContext();
 
 		ConnectionFactory cf = (ConnectionFactory) context.lookup("ConnectionFactory");
-		Connection conexao = cf.createConnection();
+		Connection conexao = cf.createConnection("user", "senha");
 
 		conexao.setClientID("estoque");
 		conexao.start();

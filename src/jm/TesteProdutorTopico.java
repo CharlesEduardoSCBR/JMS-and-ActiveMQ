@@ -1,5 +1,7 @@
 package jm;
 
+import java.io.StringWriter;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -9,6 +11,10 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.xml.bind.JAXB;
+
+import modelo.Pedido;
+import modelo.PedidoFactory;
 
 public class TesteProdutorTopico {
 
@@ -26,7 +32,13 @@ public class TesteProdutorTopico {
 
 		MessageProducer producer = session.createProducer(topico);
 
-		Message message = session.createTextMessage("<pedido><id>123</id></pedido>");
+		Pedido pedido = new PedidoFactory().geraPedidoComValores();
+		
+		StringWriter writer = new StringWriter();
+		JAXB.marshal(pedido, writer);
+		String xml = writer.toString();
+		
+		Message message = session.createTextMessage(xml);
 		producer.send(message);
 
 		session.close();
